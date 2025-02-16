@@ -7,6 +7,7 @@ import {
   Menu,
   ReceiptText,
   User,
+  X,
 } from "lucide-react";
 
 export const icons = {
@@ -18,4 +19,5 @@ export const icons = {
   user: User,
   logout: LogOut,
   dashboard: LayoutDashboard,
+  close: X,
 };

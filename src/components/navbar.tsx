@@ -25,7 +25,7 @@ export const Navbar = ({ userData }: { userData: UserDataProps }) => {
             )}
             <div className="hidden md:flex gap-4 items-center">
               {userData?.error && (
-                <Link href="/">
+                <Link href="/login">
                   <Button>Login</Button>
                 </Link>
               )}
