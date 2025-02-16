@@ -11,6 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Icon } from "./icon";
 import { useRouter } from "next/navigation";
+import { UserDataProps } from "@/lib/types";
 
 export function UserMenu({ userData }: { userData: UserDataProps }) {
   const router = useRouter();
@@ -25,7 +26,7 @@ export function UserMenu({ userData }: { userData: UserDataProps }) {
             src=""
             alt={
               userData?.payload?.name
-                ? (userData.payload?.name as string)
+                ? (userData?.payload?.name as string)
                 : "profile image placeholder"
             }
           />
@@ -51,7 +52,7 @@ export function UserMenu({ userData }: { userData: UserDataProps }) {
           <Link href="/dashboard" passHref prefetch={true}>
             <DropdownMenuItem className="capitalize flex justify-between items-center">
               <span>dashboard</span>
-              <Icon size={22} name="layout-dashboard" />
+              <Icon size={22} name="dashboard" />
             </DropdownMenuItem>
           </Link>
         )}
@@ -65,7 +66,7 @@ export function UserMenu({ userData }: { userData: UserDataProps }) {
               }}
             >
               <span>logout</span>
-              <Icon name="log-out" size={22} />
+              <Icon name="logout" size={22} />
             </DropdownMenuItem>
           </>
         )}

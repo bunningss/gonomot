@@ -14,6 +14,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userData = {
+    error: true,
+    payload: null,
+  };
+
   return (
     <html lang="en">
       <body className={`antialiased`}>
@@ -23,7 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
+          <Navbar userData={userData} />
           <Container>
             <main>{children}</main>
           </Container>

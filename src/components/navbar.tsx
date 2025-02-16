@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import { UserMenu } from "./user-menu";
 import { UserDataProps } from "@/lib/types";
 
-export const Navbar = ({ userData }: { userData?: UserDataProps }) => {
+export const Navbar = ({ userData }: { userData: UserDataProps }) => {
   return (
     <nav className="shadow-regular md:shadow-none border-b border-muted sticky top-0 z-20 bg-background h-[66px]">
       <Container>
