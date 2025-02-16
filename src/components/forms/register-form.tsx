@@ -7,6 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormModal } from "../form/form-modal";
 import { messages } from "@/lib/constants";
+import { postData } from "@/utils/api-methods";
+import { errorNotification, successNotification } from "@/utils/toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -30,7 +33,7 @@ const formSchema = z
 
 export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
-
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,9 +49,13 @@ export function RegisterForm() {
     try {
       setIsLoading(true);
 
-      console.log(formData);
+      const { error, response } = await postData("auth/register", formData);
+      if (error) return errorNotification(response.msg);
+
+      router.push("/login");
+      successNotification(response.msg);
     } catch (err) {
-      console.log(err);
+      errorNotification((err as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -72,11 +79,10 @@ export function RegisterForm() {
         />
         <FormInput
           form={form}
-          placeholder="example@email.com"
+          placeholder="012345678912"
           label="Phone number / মোবাইল নম্বর"
           required
           name="phone"
-          type="email"
         />
         <FormInput
           form={form}

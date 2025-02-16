@@ -6,7 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FormModal } from "../form/form-modal";
 import { FormInput } from "../form/form-input";
-import { messages } from "@/lib/constants";
+import { messages, siteSettings } from "@/lib/constants";
+import { postData } from "@/utils/api-methods";
+import { errorNotification, successNotification } from "@/utils/toast";
+import { useRouter } from "next/navigation";
+import { setCookie } from "@/utils/cookie";
 
 const formSchema = z.object({
   phone: z.string().min(11, {
@@ -19,6 +23,7 @@ const formSchema = z.object({
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,7 +35,13 @@ export function LoginForm() {
   const handleLoginForm = async (formData: FieldValues) => {
     try {
       setIsLoading(true);
-      console.log(formData);
+
+      const { error, response } = await postData("auth/login", formData);
+      if (error) return errorNotification(response.msg);
+
+      await setCookie(siteSettings.cookieName, response.payload);
+      router.refresh();
+      successNotification(response.msg);
     } catch (error) {
       console.log(error);
     } finally {

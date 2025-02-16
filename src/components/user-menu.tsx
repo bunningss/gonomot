@@ -40,7 +40,7 @@ export function UserMenu({ userData }: { userData: UserDataProps }) {
         <DropdownMenuSeparator />
         {userData?.error !== undefined && !userData.error && (
           <>
-            <Link passHref href="/dashboard" className="w-full">
+            <Link passHref href="" className="w-full">
               <DropdownMenuItem className="capitalize flex justify-between items-center">
                 <span>profile</span>
                 <Icon size={22} name="user" />

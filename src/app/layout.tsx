@@ -5,21 +5,20 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Container } from "@/components/container";
 import { siteSettings } from "@/lib/constants";
 import { font } from "@/lib/fonts";
+import { Toaster } from "@/components/ui/sonner";
+import { getSession } from "@/utils/auth";
 
 export const metadata: Metadata = {
   title: siteSettings.siteName,
   description: "Public voting system in bangladesh.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userData = {
-    error: true,
-    payload: null,
-  };
+  const session = await getSession();
 
   return (
     <html lang="en">
@@ -30,10 +29,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar userData={userData} />
+          <Navbar userData={session} />
           <Container>
             <main>{children}</main>
           </Container>
+          <Toaster richColors position="top-right" />
         </ThemeProvider>
       </body>
     </html>

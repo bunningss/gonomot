@@ -1,5 +1,6 @@
 export const siteSettings = {
   siteName: "গণমত",
+  cookieName: "gonomot-session",
 };
 
 export const messages = {
@@ -7,6 +8,14 @@ export const messages = {
   error: "Something went wrong. Please try again after some time.",
   loginError: "Invalid email or password. Please try again.",
   loginSuccess: "Login successful.",
+
+  auth: {
+    invalidCredentials: "Invalid phone number or password. Please try again.",
+    emailExistError:
+      "There is an account associated with this email. Try logging in.",
+    accountCreationSuccess: "Account created successfully.",
+    loginSuccess: "Login Successful.",
+  },
 
   password: {
     lengthError: "Password must be at least 8 characters long.",
