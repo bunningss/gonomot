@@ -5,6 +5,7 @@ import {
   LoaderCircle,
   LogOut,
   Menu,
+  Plus,
   ReceiptText,
   User,
   X,
@@ -20,6 +21,7 @@ export const icons = {
   logout: LogOut,
   dashboard: LayoutDashboard,
   close: X,
+  plus: Plus,
 };
 
 export const permissions = ["create:poll"];

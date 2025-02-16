@@ -35,6 +35,7 @@ export function CreatePollModal() {
       const { error, response } = await postData("polls", formData);
       if (error) return errorNotification(response.msg);
 
+      form.reset();
       router.refresh();
       setIsModalOpen(false);
       successNotification(response.msg);
@@ -51,6 +52,7 @@ export function CreatePollModal() {
       description="Create new poll."
       triggerLabel="create poll"
       className="w-fit"
+      triggerIcon="plus"
       isOpen={isModalOpen}
       onClose={() => setIsModalOpen(false)}
       onOpen={() => setIsModalOpen(true)}

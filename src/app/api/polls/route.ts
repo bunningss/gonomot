@@ -45,3 +45,22 @@ export async function POST(request: NextRequest) {
     await session.endSession();
   }
 }
+
+// Fetch all polls
+export async function GET() {
+  try {
+    await connectDb();
+
+    const polls = await Poll.find().sort({ createdAt: -1 }).lean();
+
+    return NextResponse.json(
+      { msg: "Polls found.", payload: polls },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { msg: (error as Error).message },
+      { status: 400 }
+    );
+  }
+}
