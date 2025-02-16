@@ -8,7 +8,7 @@ const pollSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: [true, "Explaing the topic properly."],
+      required: [true, "Explain the topic properly."],
       minLength: [35, "Please write at least 35 characters."],
     },
     upvotes: {
