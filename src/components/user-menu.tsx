@@ -12,6 +12,7 @@ import {
 import { Icon } from "./icon";
 import { useRouter } from "next/navigation";
 import { UserDataProps } from "@/lib/types";
+import { logout } from "@/utils/auth";
 
 export function UserMenu({ userData }: { userData: UserDataProps }) {
   const router = useRouter();
@@ -62,6 +63,7 @@ export function UserMenu({ userData }: { userData: UserDataProps }) {
             <DropdownMenuItem
               className="capitalize flex justify-between items-center"
               onClick={async () => {
+                await logout();
                 router.refresh();
               }}
             >
