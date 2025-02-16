@@ -1,15 +1,20 @@
+import Link from "next/link";
 import { Heading } from "../heading";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
 
-export function PostCard() {
+interface TopicCardProps {
+  mode: "summary" | "details";
+}
+
+export function TopicCard({ mode = "summary" }: TopicCardProps) {
   return (
     <Card>
       <CardHeader>
         <Heading>Should we eat rice?</Heading>
       </CardHeader>
       <CardContent className="space-y-2">
-        <p className="line-clamp-4">
+        <p className={mode === "summary" ? "line-clamp-4" : ""}>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, totam
           magni. Expedita autem assumenda unde adipisci deleniti vitae. Ad quod
           quos obcaecati a asperiores est quo iure optio atque facilis, nemo
@@ -50,7 +55,11 @@ export function PostCard() {
             <Button icon="upvote">29</Button>
             <Button icon="downvote">12</Button>
           </div>
-          <Button icon="details">view details</Button>
+          {mode === "summary" && (
+            <Link href="/topic/abc">
+              <Button icon="details">view details</Button>
+            </Link>
+          )}
         </div>
       </CardContent>
     </Card>

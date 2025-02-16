@@ -1,13 +1,13 @@
-import { PostCard } from "@/components/cards/post-card";
+import { TopicCard } from "@/components/cards/topic-card";
 
 export default function Home() {
   return (
     <div className="space-y-4">
-      <PostCard />
-      <PostCard />
-      <PostCard />
-      <PostCard />
-      <PostCard />
+      <TopicCard />
+      <TopicCard />
+      <TopicCard />
+      <TopicCard />
+      <TopicCard />
     </div>
   );
 }
