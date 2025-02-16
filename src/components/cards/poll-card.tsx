@@ -7,7 +7,7 @@ interface TopicCardProps {
   mode: "summary" | "details";
 }
 
-export function TopicCard({ mode }: TopicCardProps) {
+export function PollCard({ mode }: TopicCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -56,7 +56,7 @@ export function TopicCard({ mode }: TopicCardProps) {
             <Button icon="downvote">12</Button>
           </div>
           {mode === "summary" && (
-            <Link href="/topic/abc">
+            <Link href="/polls/abc">
               <Button icon="details">view details</Button>
             </Link>
           )}

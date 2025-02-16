@@ -21,3 +21,5 @@ export const icons = {
   dashboard: LayoutDashboard,
   close: X,
 };
+
+export const permissions = ["create:poll"];

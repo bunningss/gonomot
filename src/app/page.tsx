@@ -1,13 +1,13 @@
-import { TopicCard } from "@/components/cards/topic-card";
+import { PollCard } from "@/components/cards/poll-card";
 
 export default function Home() {
   return (
     <div className="space-y-4">
-      <TopicCard mode="summary" />
-      <TopicCard mode="summary" />
-      <TopicCard mode="summary" />
-      <TopicCard mode="summary" />
-      <TopicCard mode="summary" />
+      <PollCard mode="summary" />
+      <PollCard mode="summary" />
+      <PollCard mode="summary" />
+      <PollCard mode="summary" />
+      <PollCard mode="summary" />
     </div>
   );
 }

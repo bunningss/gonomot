@@ -37,6 +37,12 @@ const userSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    polls: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "poll",
+      },
+    ],
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,
