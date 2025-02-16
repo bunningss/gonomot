@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       lowercase: true,
+      unique: true,
       minlength: [11, "Phone number must be at least 11 characters"],
     },
     password: {
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
     passwordResetExpires: Date,
-    usertype: {
+    userType: {
       type: String,
       required: true,
       default: "user",

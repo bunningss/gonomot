@@ -6,9 +6,9 @@ import { verifyToken } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
+  await connectDb();
   const session = await mongoose.startSession();
   try {
-    await connectDb();
     session.startTransaction();
     const { id } = await verifyToken(request, "create:poll");
 
@@ -28,6 +28,8 @@ export async function POST(request: NextRequest) {
     );
 
     await newPoll.save({ session });
+
+    await session.commitTransaction();
 
     return NextResponse.json(
       { msg: "Poll created successfully." },
