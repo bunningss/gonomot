@@ -1,25 +1,30 @@
 import { PollCard } from "@/components/cards/poll-card";
+import { Loading } from "@/components/loading";
 import { CreatePollModal } from "@/components/modals/create-poll-modal";
 import { PollDocument } from "@/lib/types";
 import { fetchPolls } from "@/utils/api-calls";
-import { getSession, hasPermission } from "@/utils/auth";
-import { ObjectId } from "mongoose";
+import { getSession } from "@/utils/auth";
+import { Suspense } from "react";
 
-export default async function Home() {
+async function Polls() {
   const [session, polls] = await Promise.all([getSession(), fetchPolls()]);
-  const isAllowed = await hasPermission(
-    "create:poll",
-    session?.payload?._id as ObjectId
-  );
 
   return (
     <div className="space-y-4 flex flex-col items-end">
-      {isAllowed && <CreatePollModal />}
+      {session?.payload && <CreatePollModal />}
       <div className="space-y-4 w-full">
         {polls?.map((poll: PollDocument, index: number) => (
           <PollCard key={index} mode="summary" poll={poll} />
         ))}
       </div>
     </div>
+  );
+}
+
+export default async function Home() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Polls />
+    </Suspense>
   );
 }

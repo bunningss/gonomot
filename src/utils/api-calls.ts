@@ -6,3 +6,10 @@ export async function fetchPolls() {
 
   return response.payload;
 }
+
+// Fetch poll
+export async function fetchPoll(id: string) {
+  const { response } = await fetchData(`polls/${id}`, 0);
+
+  return response.payload;
+}
