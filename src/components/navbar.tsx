@@ -15,23 +15,13 @@ export const Navbar = ({ userData }: { userData: UserDataProps }) => {
           <Logo />
 
           <div className="flex items-center gap-4">
-            <div className="md:hidden">
-              <ThemeToggle />
-            </div>
-            {!userData?.error && (
-              <Button icon="menu" className="lg:hidden" onClick={() => {}}>
-                menu
-              </Button>
+            {userData?.error && (
+              <Link href="/login">
+                <Button>Login</Button>
+              </Link>
             )}
-            <div className="hidden md:flex gap-4 items-center">
-              {userData?.error && (
-                <Link href="/login">
-                  <Button>Login</Button>
-                </Link>
-              )}
-              {!userData?.error && <UserMenu userData={userData} />}
-              <ThemeToggle />
-            </div>
+            {!userData?.error && <UserMenu userData={userData} />}
+            <ThemeToggle />
           </div>
         </div>
       </Container>
