@@ -7,7 +7,7 @@ interface TopicCardProps {
   mode: "summary" | "details";
 }
 
-export function TopicCard({ mode = "summary" }: TopicCardProps) {
+export function TopicCard({ mode }: TopicCardProps) {
   return (
     <Card>
       <CardHeader>
