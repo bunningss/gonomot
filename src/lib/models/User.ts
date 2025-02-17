@@ -50,6 +50,12 @@ const userSchema = new mongoose.Schema(
         ref: "comment",
       },
     ],
+    votes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "poll",
+      },
+    ],
   },
   {
     timestamps: true,

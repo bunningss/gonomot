@@ -51,7 +51,10 @@ export async function GET() {
   try {
     await connectDb();
 
-    const polls = await Poll.find().sort({ createdAt: -1 }).lean();
+    const polls = await Poll.find()
+      .sort({ createdAt: -1 })
+      .select("-upvotedUsers -downvotedUsers")
+      .lean();
 
     return NextResponse.json(
       { msg: "Polls found.", payload: polls },

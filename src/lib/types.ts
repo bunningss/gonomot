@@ -15,4 +15,9 @@ export interface IPoll {
   downvotedUsers: Types.ObjectId[];
 }
 
+export interface IUser {
+  votes: Types.ObjectId[];
+}
+
 export type PollDocument = IPoll & Document;
+export type UserDocument = IUser & Document;
