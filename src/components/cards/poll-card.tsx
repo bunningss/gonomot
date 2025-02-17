@@ -8,6 +8,7 @@ import { errorNotification, successNotification } from "@/utils/toast";
 import { updateData } from "@/utils/api-methods";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Icon } from "../icon";
 
 interface TopicCardProps {
   mode: "summary" | "details";
@@ -66,11 +67,11 @@ export function PollCard({ mode, poll }: TopicCardProps) {
   };
 
   return (
-    <Card>
+    <Card className="shadow-md">
       <CardHeader>
         <Heading className="first-letter:capitalize">{poll?.title}</Heading>
       </CardHeader>
-      <CardContent className="space-y-2">
+      <CardContent className="space-y-4 md:space-y-2">
         <p
           className={`${
             mode === "summary" ? "line-clamp-4" : ""
@@ -78,31 +79,57 @@ export function PollCard({ mode, poll }: TopicCardProps) {
         >
           {poll?.description}
         </p>
-        <div className="flex justify-between items-center">
-          <div className="flex gap-4">
-            <Button
-              disabled={isLoading || new Date(poll.duration) <= new Date()}
-              onClick={() => handleVoting("yes")}
-              icon="upvote"
-            >
-              {poll?.upvotes}
-            </Button>
-            <Button
-              disabled={isLoading || new Date(poll.duration) <= new Date()}
-              onClick={() => handleVoting("no")}
-              icon="downvote"
-            >
-              {poll?.downvotes}
-            </Button>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {new Date(poll.duration) > new Date() && (
+            <div className="flex gap-4">
+              <Button
+                disabled={isLoading || new Date(poll.duration) <= new Date()}
+                onClick={() => handleVoting("yes")}
+                icon="upvote"
+              >
+                {poll?.upvotes}
+              </Button>
+              <Button
+                disabled={isLoading || new Date(poll.duration) <= new Date()}
+                onClick={() => handleVoting("no")}
+                icon="downvote"
+              >
+                {poll?.downvotes}
+              </Button>
+            </div>
+          )}
+
+          {new Date(poll.duration) <= new Date() && (
+            <div className="col-span-2 md:col-span-1 flex items-center justify-between gap-4 bg-secondary p-2 rounded-md md:w-fit">
+              <div className="flex items-center gap-2 text-green-600">
+                <Icon name="thumbsUp" size={18} />
+                <span className="font-semibold">{poll.upvotes} in favour</span>
+              </div>
+              <div className="flex items-center gap-2 text-red-600">
+                <Icon name="thumbsUp" size={18} />
+                <span className="font-semibold">{poll.downvotes} against</span>
+              </div>
+            </div>
+          )}
+          <div
+            className={`md:flex justify-center ${
+              new Date(poll.duration) <= new Date() ? "hidden" : ""
+            }`}
+          >
+            <div className="bg-secondary p-2 rounded-md text-center">
+              <span className="text-sm text-gray-500">{timeLeft}</span>
+            </div>
           </div>
 
-          <span className="text-sm text-gray-500">{timeLeft}</span>
-
-          {mode === "summary" && (
-            <Link href={`/polls/${poll?._id}`}>
-              <Button icon="details">view details</Button>
-            </Link>
-          )}
+          <div className="flex md:justify-end col-span-2 md:col-span-1">
+            {mode === "summary" && (
+              <Link href={`/polls/${poll?._id}`} className="w-full md:w-fit">
+                <Button icon="details" className="w-full md:w-fit">
+                  view details
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -7,6 +7,8 @@ import {
   Menu,
   Plus,
   ReceiptText,
+  ThumbsDown,
+  ThumbsUp,
   User,
   X,
 } from "lucide-react";
@@ -22,6 +24,8 @@ export const icons = {
   dashboard: LayoutDashboard,
   close: X,
   plus: Plus,
+  thumbsUp: ThumbsUp,
+  ThumbsDown: ThumbsDown,
 };
 
 export const permissions = ["create:poll", "cast:vote"];
