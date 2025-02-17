@@ -13,6 +13,7 @@ import { FormTextarea } from "../form/form-textarea";
 
 const pollForm = z.object({
   title: z.string(),
+  durationDays: z.coerce.number(),
   description: z.string(),
 });
 
@@ -24,6 +25,7 @@ export function CreatePollModal() {
     resolver: zodResolver(pollForm),
     defaultValues: {
       title: "",
+      durationDays: 0,
       description: "",
     },
   });
@@ -69,6 +71,12 @@ export function CreatePollModal() {
           required
           name="title"
           label="Enter a descriptive title"
+        />
+        <FormInput
+          form={form}
+          required
+          name="durationDays"
+          label="Poll expires in"
         />
         <FormTextarea
           form={form}

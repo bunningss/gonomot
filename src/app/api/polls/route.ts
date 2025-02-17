@@ -5,6 +5,7 @@ import { connectDb } from "@/lib/db/connect-db";
 import { verifyToken } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 
+// Create new poll
 export async function POST(request: NextRequest) {
   await connectDb();
   const session = await mongoose.startSession();
@@ -14,7 +15,14 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    const newPoll = await new Poll(body);
+    const durationDays = Number(body.durationDays);
+
+    const currentDate = new Date();
+    const expirationDate = new Date(
+      currentDate.setDate(currentDate.getDate() + durationDays)
+    );
+
+    const newPoll = await new Poll({ ...body, duration: expirationDate });
 
     await User.findByIdAndUpdate(
       id,

@@ -1,8 +1,8 @@
-import { connectDb } from "@/lib/db/connect-db";
 import Poll from "@/lib/models/Poll";
 import User from "@/lib/models/User";
-import { verifyToken } from "@/utils/auth";
 import mongoose from "mongoose";
+import { connectDb } from "@/lib/db/connect-db";
+import { verifyToken } from "@/utils/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 // Cast a vote
@@ -19,6 +19,11 @@ export async function PUT(
 
     if (body.vote === "yes" || body.vote === "no") {
       const poll = await Poll.findById(params.id);
+
+      const currentTime = new Date();
+      if (poll.duration < currentTime) {
+        throw new Error("Voting closed!");
+      }
 
       if (!poll) {
         return NextResponse.json({ msg: "Invalid poll." }, { status: 400 });

@@ -39,6 +39,10 @@ const pollSchema = new mongoose.Schema(
         ref: "comment",
       },
     ],
+    duration: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

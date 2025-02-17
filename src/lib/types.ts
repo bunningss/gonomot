@@ -13,6 +13,7 @@ export interface IPoll {
   downvotes: number;
   upvotedUsers: Types.ObjectId[];
   downvotedUsers: Types.ObjectId[];
+  duration: Date;
 }
 
 export interface IUser {
