@@ -100,7 +100,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
           )}
 
           {new Date(poll.duration) <= new Date() && (
-            <div className="col-span-2 md:col-span-1 flex items-center justify-between gap-4 bg-secondary p-2 rounded-md md:w-fit">
+            <div className="md:text-sm col-span-2 md:col-span-1 flex items-center justify-between gap-4 bg-secondary p-2 rounded-md md:w-fit">
               <div className="flex items-center gap-2 text-green-600">
                 <Icon name="thumbsUp" size={18} />
                 <span className="font-semibold">{poll.upvotes} in favour</span>
