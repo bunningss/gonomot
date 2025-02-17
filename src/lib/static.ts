@@ -24,4 +24,4 @@ export const icons = {
   plus: Plus,
 };
 
-export const permissions = ["create:poll"];
+export const permissions = ["create:poll", "cast:vote"];

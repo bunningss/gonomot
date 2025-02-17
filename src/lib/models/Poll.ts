@@ -21,6 +21,18 @@ const pollSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    upvotedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
+    downvotedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     comments: [
       {
         type: mongoose.Schema.Types.ObjectId,

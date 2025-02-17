@@ -1,5 +1,5 @@
 import { JWTPayload } from "jose";
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface UserDataProps {
   error: boolean;
@@ -11,6 +11,8 @@ export interface IPoll {
   description: string;
   upvotes: number;
   downvotes: number;
+  upvotedUsers: Types.ObjectId[];
+  downvotedUsers: Types.ObjectId[];
 }
 
 export type PollDocument = IPoll & Document;
