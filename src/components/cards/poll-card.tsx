@@ -1,16 +1,18 @@
 "use client";
+
 import Link from "next/link";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import type { Types } from "mongoose";
 import { Heading } from "../heading";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { PollDocument } from "@/lib/types";
+import { Icon } from "../icon";
+import type { PollDocument } from "@/lib/types";
 import { errorNotification, successNotification } from "@/utils/toast";
 import { updateData } from "@/utils/api-methods";
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Icon } from "../icon";
 import { getSession } from "@/utils/auth";
-import { Types } from "mongoose";
+import { PollCardSkeleton } from "../skeletons/poll-card-skeleton";
 
 interface TopicCardProps {
   mode: "summary" | "details";
@@ -19,12 +21,17 @@ interface TopicCardProps {
 
 export function PollCard({ mode, poll }: TopicCardProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [userId, setUserId] = useState<Types.ObjectId | null>(null);
   const [timeLeft, setTimeLeft] = useState<string>("");
   const router = useRouter();
 
-  // calculate time remaining
-  const getTimeRemaining = (expirationTime: Date) => {
+  const isExpired = useMemo(
+    () => new Date(poll.duration) <= new Date(),
+    [poll.duration]
+  );
+
+  const getTimeRemaining = useCallback((expirationTime: Date) => {
     const now = new Date();
     const endTime = new Date(expirationTime);
     const timeDiff = endTime.getTime() - now.getTime();
@@ -39,9 +46,8 @@ export function PollCard({ mode, poll }: TopicCardProps) {
     const hours = totalHours % 24;
 
     return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-  };
+  }, []);
 
-  // update countdown
   useEffect(() => {
     const interval = setInterval(() => {
       const remainingTime = getTimeRemaining(poll.duration);
@@ -49,20 +55,18 @@ export function PollCard({ mode, poll }: TopicCardProps) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [poll.duration]);
+  }, [poll.duration, getTimeRemaining]);
 
-  // Check if user voted
   useEffect(() => {
-    const checkVote = async () => {
+    const fetchUserId = async () => {
       const { payload } = await getSession();
-
       setUserId(payload?._id as Types.ObjectId);
+      setIsLoaded(true);
     };
 
-    checkVote();
-  }, [poll]);
+    fetchUserId();
+  }, []);
 
-  // Submit vote
   const handleVoting = async (vote: string) => {
     try {
       setIsLoading(true);
@@ -81,8 +85,18 @@ export function PollCard({ mode, poll }: TopicCardProps) {
     }
   };
 
-  const upvoted = poll.upvotedUsers?.includes(userId!);
-  const downvoted = poll.downvotedUsers?.includes(userId!);
+  const upvoted = useMemo(
+    () => poll.upvotedUsers?.includes(userId!),
+    [poll.upvotedUsers, userId]
+  );
+  const downvoted = useMemo(
+    () => poll.downvotedUsers?.includes(userId!),
+    [poll.downvotedUsers, userId]
+  );
+
+  if (!isLoaded) {
+    return <PollCardSkeleton />;
+  }
 
   return (
     <Card className="shadow-md">
@@ -98,15 +112,10 @@ export function PollCard({ mode, poll }: TopicCardProps) {
           {poll?.description}
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {new Date(poll?.duration) > new Date() && (
+          {!isExpired && (
             <div className="flex gap-4">
               <Button
-                disabled={
-                  upvoted ||
-                  downvoted ||
-                  isLoading ||
-                  new Date(poll?.duration) <= new Date()
-                }
+                disabled={upvoted || downvoted || isLoading}
                 className={`${upvoted ? "bg-green-600 text-foreground" : ""}`}
                 onClick={() => handleVoting("yes")}
                 icon="upvote"
@@ -114,12 +123,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
                 {poll?.upvotes}
               </Button>
               <Button
-                disabled={
-                  upvoted ||
-                  downvoted ||
-                  isLoading ||
-                  new Date(poll?.duration) <= new Date()
-                }
+                disabled={upvoted || downvoted || isLoading}
                 className={`${
                   downvoted ? "bg-destructive text-foreground" : ""
                 }`}
@@ -131,7 +135,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
             </div>
           )}
 
-          {new Date(poll?.duration) <= new Date() && (
+          {isExpired && (
             <div className="md:text-sm col-span-2 md:col-span-1 flex items-center justify-between gap-4 bg-secondary p-2 rounded-md md:w-fit">
               <div className="flex items-center gap-2 text-green-600">
                 <Icon name="thumbsUp" size={18} />
@@ -144,9 +148,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
             </div>
           )}
           <div
-            className={`md:flex justify-center ${
-              new Date(poll?.duration) <= new Date() ? "hidden" : ""
-            }`}
+            className={`md:flex justify-center ${isExpired ? "hidden" : ""}`}
           >
             <div className="bg-secondary p-2 rounded-md text-center">
               <span className="text-sm text-gray-500">{timeLeft}</span>

@@ -1,10 +1,8 @@
 import { PollCard } from "@/components/cards/poll-card";
-import { Loading } from "@/components/loading";
 import { CreatePollModal } from "@/components/modals/create-poll-modal";
 import { PollDocument } from "@/lib/types";
 import { fetchPolls } from "@/utils/api-calls";
 import { getSession } from "@/utils/auth";
-import { Suspense } from "react";
 
 async function Polls() {
   const [session, polls] = await Promise.all([getSession(), fetchPolls()]);
@@ -22,9 +20,5 @@ async function Polls() {
 }
 
 export default async function Home() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <Polls />
-    </Suspense>
-  );
+  return <Polls />;
 }

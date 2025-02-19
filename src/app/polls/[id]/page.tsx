@@ -1,8 +1,6 @@
 import { PollCard } from "@/components/cards/poll-card";
-import { Loading } from "@/components/loading";
 import { TopicComments } from "@/components/topic-comments";
 import { fetchPoll } from "@/utils/api-calls";
-import { Suspense } from "react";
 
 async function Poll({ id }: { id: string }) {
   const poll = await fetchPoll(id);
@@ -16,9 +14,5 @@ async function Poll({ id }: { id: string }) {
 }
 
 export default async function page({ params }: { params: { id: string } }) {
-  return (
-    <Suspense fallback={<Loading />}>
-      <Poll id={params.id} />
-    </Suspense>
-  );
+  return <Poll id={params.id} />;
 }
