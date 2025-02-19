@@ -1,4 +1,5 @@
-import { jwtVerify, SignJWT } from "jose";
+"use server";
+import { JWTPayload, jwtVerify, SignJWT } from "jose";
 import { getEnv } from "./get-env";
 import { getCookie, setCookie } from "./cookie";
 import { messages, siteSettings } from "@/lib/constants";
@@ -27,7 +28,7 @@ export async function getSession() {
 
     return {
       error: false,
-      payload: verifiedToken.payload,
+      payload: verifiedToken.payload as JWTPayload,
     };
   } catch (err) {
     console.log(err);

@@ -76,7 +76,7 @@ export function CreatePollModal() {
           form={form}
           required
           name="durationDays"
-          label="Poll expires in"
+          label="Poll expires in (Number of days)"
         />
         <FormTextarea
           form={form}

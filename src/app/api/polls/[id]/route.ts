@@ -10,9 +10,7 @@ export async function GET(
   try {
     await connectDb();
 
-    const poll = await Poll.findById(params.id)
-      .select("-upvotedUsers -downvotedUsers")
-      .lean();
+    const poll = await Poll.findById(params.id).lean();
 
     return NextResponse.json(
       { msg: "Poll found.", payload: poll },

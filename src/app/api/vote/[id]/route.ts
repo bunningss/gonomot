@@ -40,11 +40,11 @@ export async function PUT(
 
       if (body.vote?.toLowerCase() === "yes") {
         poll.upvotes += 1;
-        poll.upvotedUsers.push(id);
+        poll.upvotedUsers?.push(id);
         user.votes.push(poll._id);
       } else if (body.vote?.toLowerCase() === "no") {
         poll.downvotes += 1;
-        poll.downvotedUsers.push(id);
+        poll.downvotedUsers?.push(id);
         user.votes.push(poll._id);
       }
 

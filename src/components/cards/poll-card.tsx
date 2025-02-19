@@ -9,6 +9,8 @@ import { updateData } from "@/utils/api-methods";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Icon } from "../icon";
+import { getSession } from "@/utils/auth";
+import { Types } from "mongoose";
 
 interface TopicCardProps {
   mode: "summary" | "details";
@@ -16,7 +18,8 @@ interface TopicCardProps {
 }
 
 export function PollCard({ mode, poll }: TopicCardProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userId, setUserId] = useState<Types.ObjectId | null>(null);
   const [timeLeft, setTimeLeft] = useState<string>("");
   const router = useRouter();
 
@@ -48,6 +51,18 @@ export function PollCard({ mode, poll }: TopicCardProps) {
     return () => clearInterval(interval);
   }, [poll.duration]);
 
+  // Check if user voted
+  useEffect(() => {
+    const checkVote = async () => {
+      const { payload } = await getSession();
+
+      setUserId(payload?._id as Types.ObjectId);
+    };
+
+    checkVote();
+  }, [poll]);
+
+  // Submit vote
   const handleVoting = async (vote: string) => {
     try {
       setIsLoading(true);
@@ -66,6 +81,9 @@ export function PollCard({ mode, poll }: TopicCardProps) {
     }
   };
 
+  const upvoted = poll.upvotedUsers?.includes(userId!);
+  const downvoted = poll.downvotedUsers?.includes(userId!);
+
   return (
     <Card className="shadow-md">
       <CardHeader>
@@ -80,17 +98,31 @@ export function PollCard({ mode, poll }: TopicCardProps) {
           {poll?.description}
         </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {new Date(poll.duration) > new Date() && (
+          {new Date(poll?.duration) > new Date() && (
             <div className="flex gap-4">
               <Button
-                disabled={isLoading || new Date(poll.duration) <= new Date()}
+                disabled={
+                  upvoted ||
+                  downvoted ||
+                  isLoading ||
+                  new Date(poll?.duration) <= new Date()
+                }
+                className={`${upvoted ? "bg-green-600 text-foreground" : ""}`}
                 onClick={() => handleVoting("yes")}
                 icon="upvote"
               >
                 {poll?.upvotes}
               </Button>
               <Button
-                disabled={isLoading || new Date(poll.duration) <= new Date()}
+                disabled={
+                  upvoted ||
+                  downvoted ||
+                  isLoading ||
+                  new Date(poll?.duration) <= new Date()
+                }
+                className={`${
+                  downvoted ? "bg-destructive text-foreground" : ""
+                }`}
                 onClick={() => handleVoting("no")}
                 icon="downvote"
               >
@@ -99,7 +131,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
             </div>
           )}
 
-          {new Date(poll.duration) <= new Date() && (
+          {new Date(poll?.duration) <= new Date() && (
             <div className="md:text-sm col-span-2 md:col-span-1 flex items-center justify-between gap-4 bg-secondary p-2 rounded-md md:w-fit">
               <div className="flex items-center gap-2 text-green-600">
                 <Icon name="thumbsUp" size={18} />
@@ -113,7 +145,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
           )}
           <div
             className={`md:flex justify-center ${
-              new Date(poll.duration) <= new Date() ? "hidden" : ""
+              new Date(poll?.duration) <= new Date() ? "hidden" : ""
             }`}
           >
             <div className="bg-secondary p-2 rounded-md text-center">
