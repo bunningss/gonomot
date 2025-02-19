@@ -115,7 +115,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
           {!isExpired && (
             <div className="flex gap-4">
               <Button
-                disabled={upvoted || downvoted || isLoading}
+                disabled={!userId || upvoted || downvoted || isLoading}
                 className={`${upvoted ? "bg-green-600 text-foreground" : ""}`}
                 onClick={() => handleVoting("yes")}
                 icon="upvote"
@@ -123,7 +123,7 @@ export function PollCard({ mode, poll }: TopicCardProps) {
                 {poll?.upvotes}
               </Button>
               <Button
-                disabled={upvoted || downvoted || isLoading}
+                disabled={!userId || upvoted || downvoted || isLoading}
                 className={`${
                   downvoted ? "bg-destructive text-foreground" : ""
                 }`}
